@@ -52,10 +52,13 @@ public class GenericFilter implements Filter {
                 && inv.getArguments() != null
                 && inv.getArguments().length == 3
                 && !ProtocolUtils.isGeneric(invoker.getUrl().getParameter(Constants.GENERIC_KEY))) {
+            // 通用的泛化调用
+            // 获取实际需要执行的方法，参数类型，参数等
             String name = ((String) inv.getArguments()[0]).trim();
             String[] types = (String[]) inv.getArguments()[1];
             Object[] args = (Object[]) inv.getArguments()[2];
             try {
+                // 根据方法签名获取服务端实际的方法
                 Method method = ReflectUtils.findMethodByMethodSignature(invoker.getInterface(), name, types);
                 Class<?>[] params = method.getParameterTypes();
                 if (args == null) {
@@ -64,6 +67,7 @@ public class GenericFilter implements Filter {
                 String generic = inv.getAttachment(Constants.GENERIC_KEY);
                 if (StringUtils.isEmpty(generic)
                         || ProtocolUtils.isDefaultGenericSerialization(generic)) {
+                    // 根据实际参数类型 序列化参数（对参数进行兼容处理）
                     args = PojoUtils.realize(args, params, method.getGenericParameterTypes());
                 } else if (ProtocolUtils.isJavaGenericSerialization(generic)) {
                     for (int i = 0; i < args.length; i++) {
@@ -102,6 +106,7 @@ public class GenericFilter implements Filter {
                         }
                     }
                 }
+                // 此时的args是做了兼容处理后的参数值
                 Result result = invoker.invoke(new RpcInvocation(method, args, inv.getAttachments()));
                 if (result.hasException()
                         && !(result.getException() instanceof GenericException)) {
@@ -120,6 +125,7 @@ public class GenericFilter implements Filter {
                 } else if (ProtocolUtils.isBeanGenericSerialization(generic)) {
                     return new RpcResult(JavaBeanSerializeUtil.serialize(result.getValue(), JavaBeanAccessor.METHOD));
                 } else {
+                    // 对返回值进行类型处理
                     return new RpcResult(PojoUtils.generalize(result.getValue()));
                 }
             } catch (NoSuchMethodException e) {

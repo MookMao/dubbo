@@ -17,16 +17,88 @@
 package com.alibaba.dubbo.demo.provider;
 
 import com.alibaba.dubbo.demo.DemoService;
+import com.alibaba.dubbo.demo.User;
+import com.alibaba.dubbo.demo.UserGroup;
 import com.alibaba.dubbo.rpc.RpcContext;
+import com.alibaba.fastjson.JSON;
+import com.google.common.collect.Maps;
 
 import java.text.SimpleDateFormat;
+import java.util.Arrays;
 import java.util.Date;
+import java.util.List;
+import java.util.Map;
 
 public class DemoServiceImpl implements DemoService {
 
+    @Override
+    public void doNothing() {
+        System.out.println("doNothing");
+    }
+
+    @Override
+    public Integer getBookNumByName(String name) {
+        System.out.println(this.getClass().getName() + "--" + name);
+        return Integer.valueOf(10);
+    }
+
+    @Override
+    public int getBookNum(int num) {
+        System.out.println(this.getClass().getName() + "--" + num);
+        return num;
+    }
+
+    @Override
+    public List<String> getList(List<String> list) {
+        System.out.println(this.getClass().getName() + "--" + JSON.toJSONString(list));
+        return list;
+    }
+
+    @Override
+    public Map<User, Integer> getMap(List<String> list) {
+        System.out.println(this.getClass().getName() + "--" + JSON.toJSONString(list));
+        final Map<User, Integer> map = Maps.newHashMap();
+        list.forEach( o -> {
+            User user = new User();
+            user.setName(o);
+            map.put(user, 1);
+        });
+        return map;
+    }
+
+    @Override
+    public User getUser(User user) {
+        System.out.println(this.getClass().getName() + "--" + JSON.toJSONString(user));
+        return user;
+    }
+
+    @Override
     public String sayHello(String name) {
         System.out.println("[" + new SimpleDateFormat("HH:mm:ss").format(new Date()) + "] Hello " + name + ", request from consumer: " + RpcContext.getContext().getRemoteAddress());
         return "Hello " + name + ", response form provider: " + RpcContext.getContext().getLocalAddress();
+    }
+
+    @Override
+    public Integer getRemoteResult() {
+        try {
+            Thread.sleep(3000L);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        return 1;
+    }
+
+    @Override
+    public List<List<UserGroup>> saveUser(User user, String str) {
+        UserGroup userGroup = new UserGroup();
+        userGroup.setGroupId(str);
+        userGroup.setUserList(Arrays.asList(user));
+        return Arrays.asList(Arrays.asList(userGroup));
+    }
+
+    @Override
+    public boolean saveUserGroup(List<UserGroup> list) {
+        return true;
     }
 
 }

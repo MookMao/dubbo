@@ -16,8 +16,57 @@
  */
 package com.alibaba.dubbo.demo;
 
+import java.util.List;
+import java.util.Map;
+
 public interface DemoService {
 
+    /**
+     * 无参数和无返回值
+     */
+    void doNothing();
+
+    /**
+     * 参数和返回值为基本类型
+     * @param name
+     * @return
+     */
+    Integer getBookNumByName(String name);
+
+    /**
+     * 参数和返回值类型为int
+     * @param num
+     * @return
+     */
+    int getBookNum(int num);
+
+    /**
+     * 参数和返回值为list
+     * @param list
+     * @return
+     */
+    List<String> getList(List<String> list);
+
+    /**
+     * 参数为List，返回值为Map
+     * @param list
+     * @return
+     */
+    Map<User, Integer> getMap(List<String> list);
+
+    /**
+     * 参数和返回值类型为POJO
+     * @param user
+     * @return
+     */
+    User getUser(User user);
+
     String sayHello(String name);
+
+    Integer getRemoteResult();
+
+    List<List<UserGroup>> saveUser(User user, String str);
+
+    boolean saveUserGroup(List<UserGroup> list);
 
 }

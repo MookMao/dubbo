@@ -386,14 +386,17 @@ public class PojoUtils {
             }
             Map<Object, Object> map;
             // when return type is not the subclass of return type from the signature and not an interface
+            // 返回值类型不是方法签名类型的子集 并且 不是接口类型
             if (!type.isInterface() && !type.isAssignableFrom(pojo.getClass())) {
                 try {
+                    // 由于类型不对，一般这里会抛异常，比如type是POJO，而pojo是JSONObject
                     map = (Map<Object, Object>) type.newInstance();
                     Map<Object, Object> mapPojo = (Map<Object, Object>) pojo;
                     map.putAll(mapPojo);
                     map.remove("class");
                 } catch (Exception e) {
                     //ignore error
+                    // 执行这里的逻辑，强转map(JSONObject -> map)
                     map = (Map<Object, Object>) pojo;
                 }
             } else {
@@ -433,22 +436,27 @@ public class PojoUtils {
                 history.put(pojo, dest);
                 return dest;
             } else {
+                // 反射构造函数，new个对象
                 Object dest = newInstance(type);
                 history.put(pojo, dest);
                 for (Map.Entry<Object, Object> entry : map.entrySet()) {
                     Object key = entry.getKey();
+                    // 支持map，获取属性名称
                     if (key instanceof String) {
                         String name = (String) key;
                         Object value = entry.getValue();
                         if (value != null) {
+                            // 根据字段名，获取setter方法
                             Method method = getSetterMethod(dest.getClass(), name, value.getClass());
                             Field field = getField(dest.getClass(), name);
                             if (method != null) {
                                 if (!method.isAccessible())
                                     method.setAccessible(true);
                                 Type ptype = method.getGenericParameterTypes()[0];
+                                // 对请求值进行兼容改造处理，例如string转成需要的long，所以，转换成功就不会报错
                                 value = realize0(value, method.getParameterTypes()[0], ptype, history);
                                 try {
+                                    // set方法来设置value到dest对象中
                                     method.invoke(dest, value);
                                 } catch (Exception e) {
                                     e.printStackTrace();
