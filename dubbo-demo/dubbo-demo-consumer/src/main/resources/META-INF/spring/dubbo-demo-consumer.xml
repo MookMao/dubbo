@@ -32,6 +32,7 @@ limitations under the License.
 
     <!-- 生成远程服务代理，可以和本地bean一样使用demoService -->
     <!-- check为false表示关闭 启动时检查 功能-->
+    <!-- stub配置本地存根 -->
     <dubbo:reference id="demoService" check="false" interface="com.alibaba.dubbo.demo.DemoService"/>
 
 </beans>
