@@ -24,16 +24,37 @@ import com.alibaba.fastjson.JSON;
 import com.google.common.collect.Maps;
 
 import java.text.SimpleDateFormat;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class DemoServiceImpl implements DemoService {
 
     @Override
     public void doNothing() {
         System.out.println("doNothing");
+    }
+
+    /**
+     * invoke com.alibaba.dubbo.demo.DemoService.processListOfDate(["2019-01-23 14:50:55", "2018-01-23 14:50:55"])
+     * @param dates
+     * @return
+     */
+    @Override
+    public int processListOfDate(List<Date> dates) {
+        System.out.println(1);
+        return 1;
+    }
+
+    @Override
+    public int processSet(Set<Long> set) {
+        System.out.println(1);
+        return 1;
+    }
+
+    public static void main(String[] args) {
+        Set<Long> set = new TreeSet<>();
+        set.add(1L);
+        set.add(2L);
+        System.out.println(JSON.toJSONString(set));
     }
 
     @Override

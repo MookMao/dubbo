@@ -1,7 +1,9 @@
 package com.alibaba.dubbo.demo;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * @Author: maojunkai
@@ -23,6 +25,16 @@ public class DemoServiceStub implements DemoService {
     @Override
     public void doNothing() {
 
+    }
+
+    @Override
+    public int processListOfDate(List<Date> dates) {
+        return 0;
+    }
+
+    @Override
+    public int processSet(Set<Long> set) {
+        return 0;
     }
 
     @Override

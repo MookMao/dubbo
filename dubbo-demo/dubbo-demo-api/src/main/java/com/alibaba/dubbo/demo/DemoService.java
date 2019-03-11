@@ -16,8 +16,10 @@
  */
 package com.alibaba.dubbo.demo;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 public interface DemoService {
 
@@ -25,6 +27,15 @@ public interface DemoService {
      * 无参数和无返回值
      */
     void doNothing();
+
+    /**
+     * 测试telnet invoke参数类型转换
+     * @param dates
+     * @return
+     */
+    int processListOfDate(List<Date> dates);
+
+    int processSet(Set<Long> set);
 
     /**
      * 参数和返回值为基本类型
