@@ -33,6 +33,11 @@ limitations under the License.
     <!-- 生成远程服务代理，可以和本地bean一样使用demoService -->
     <!-- check为false表示关闭 启动时检查 功能-->
     <!-- stub配置本地存根 -->
+<!--    url 表示直连-->
+<!--    <dubbo:reference id="demoService" check="false" interface="com.alibaba.dubbo.demo.DemoService" url="127.0.0.1:20882"/>-->
     <dubbo:reference id="demoService" check="false" interface="com.alibaba.dubbo.demo.DemoService"/>
+
+<!--        <dubbo:monitor address="127.0.0.1:2181"></dubbo:monitor>-->
+<!--    <dubbo:monitor protocol="registry"></dubbo:monitor>-->
 
 </beans>

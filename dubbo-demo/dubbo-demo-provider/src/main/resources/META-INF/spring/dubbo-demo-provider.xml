@@ -40,4 +40,6 @@ limitations under the License.
     <!--<dubbo:service interface="com.alibaba.dubbo.demo.DemoService" ref="demoService" timeout="30000"  stub="true"/>-->
     <dubbo:service interface="com.alibaba.dubbo.demo.DemoService" ref="demoService" timeout="30000"/>
 
+<!--    <dubbo:monitor address="127.0.0.1:2181"></dubbo:monitor>-->
+<!--    <dubbo:monitor protocol="registry"></dubbo:monitor>-->
 </beans>
