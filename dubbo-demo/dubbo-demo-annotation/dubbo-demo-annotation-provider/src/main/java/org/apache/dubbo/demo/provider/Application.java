@@ -31,9 +31,9 @@ public class Application {
         System.in.read();
     }
 
-    @Configuration
-    @EnableDubbo(scanBasePackages = "org.apache.dubbo.demo.provider")
-    @PropertySource("classpath:/spring/dubbo-provider.properties")
+    @Configuration // 配置类
+    @EnableDubbo(scanBasePackages = "org.apache.dubbo.demo.provider") // @EnableDubbo注解指定包下的Bean都会被扫描，并做Dubbo服务暴露出去
+    @PropertySource("classpath:/spring/dubbo-provider.properties") // @PropertySource注解指定了其他配置信息
     static class ProviderConfiguration {
         @Bean
         public RegistryConfig registryConfig() {
