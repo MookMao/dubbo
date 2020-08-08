@@ -249,6 +249,7 @@ public class DubboProtocol extends AbstractProtocol {
         return exporter;
     }
 
+    // 底层创建netty服务器，监听duubo端口号，暴露服务
     private void openServer(URL url) {
         // find server.
         String key = url.getAddress();
@@ -326,6 +327,15 @@ public class DubboProtocol extends AbstractProtocol {
         }
     }
 
+    /**
+     * 连接获取客户端
+     *
+     * @param serviceType
+     * @param url  URL address for the remote service
+     * @param <T>
+     * @return
+     * @throws RpcException
+     */
     public <T> Invoker<T> refer(Class<T> serviceType, URL url) throws RpcException {
         optimizeSerialization(url);
         // create rpc invoker.
@@ -402,6 +412,7 @@ public class DubboProtocol extends AbstractProtocol {
             if (url.getParameter(Constants.LAZY_CONNECT_KEY, false)) {
                 client = new LazyConnectExchangeClient(url, requestHandler);
             } else {
+                // 创建Netty客户端连接
                 client = Exchangers.connect(url, requestHandler);
             }
         } catch (RemotingException e) {

@@ -71,6 +71,7 @@ public class DubboInvoker<T> extends AbstractInvoker<T> {
         inv.setAttachment(Constants.PATH_KEY, getUrl().getPath());
         inv.setAttachment(Constants.VERSION_KEY, version);
 
+        // 客户端
         ExchangeClient currentClient;
         if (clients.length == 1) {
             currentClient = clients[0];

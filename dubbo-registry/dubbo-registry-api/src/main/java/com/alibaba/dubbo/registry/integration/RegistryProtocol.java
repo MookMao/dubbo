@@ -137,8 +137,10 @@ public class RegistryProtocol implements Protocol {
         //to judge to delay publish whether or not
         boolean register = registedProviderUrl.getParameter("register", true);
 
+        // 本地注册表缓存
         ProviderConsumerRegTable.registerProvider(originInvoker, registryUrl, registedProviderUrl);
 
+        // 注册服务
         if (register) {
             register(registryUrl, registedProviderUrl);
             ProviderConsumerRegTable.getProviderWrapper(originInvoker).setReg(true);
@@ -163,6 +165,7 @@ public class RegistryProtocol implements Protocol {
                 exporter = (ExporterChangeableWrapper<T>) bounds.get(key);
                 if (exporter == null) {
                     final Invoker<?> invokerDelegete = new InvokerDelegete<T>(originInvoker, getProviderUrl(originInvoker));
+                    // DubboProtocol 暴露服务
                     exporter = new ExporterChangeableWrapper<T>((Exporter<T>) protocol.export(invokerDelegete), originInvoker);
                     bounds.put(key, exporter);
                 }
@@ -263,6 +266,15 @@ public class RegistryProtocol implements Protocol {
         return key;
     }
 
+    /**
+     * 订阅服务，返回Invoker
+     *
+     * @param type Service class
+     * @param url  URL address for the remote service
+     * @param <T>
+     * @return
+     * @throws RpcException
+     */
     @SuppressWarnings("unchecked")
     public <T> Invoker<T> refer(Class<T> type, URL url) throws RpcException {
         url = url.setProtocol(url.getParameter(Constants.REGISTRY_KEY, Constants.DEFAULT_REGISTRY)).removeParameter(Constants.REGISTRY_KEY);
@@ -305,6 +317,7 @@ public class RegistryProtocol implements Protocol {
                         + "," + Constants.ROUTERS_CATEGORY));
 
         Invoker invoker = cluster.join(directory);
+        // 注册表
         ProviderConsumerRegTable.registerConsumer(invoker, url, subscribeUrl, directory);
         return invoker;
     }

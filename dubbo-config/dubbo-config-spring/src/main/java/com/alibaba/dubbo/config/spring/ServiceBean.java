@@ -113,6 +113,12 @@ public class ServiceBean<T> extends ServiceConfig<T> implements InitializingBean
         return service;
     }
 
+    /**
+     * 实现spring内ApplicationListener接口，此处监听的是ContextRefreshedEvent
+     * 当IOC容器刷新完成，即所有对象创建完成之后回调执行
+     *
+     * @param event
+     */
     public void onApplicationEvent(ContextRefreshedEvent event) {
         if (isDelay() && !isExported() && !isUnexported()) {
             if (logger.isInfoEnabled()) {
@@ -131,6 +137,11 @@ public class ServiceBean<T> extends ServiceConfig<T> implements InitializingBean
         return supportedApplicationListener && (delay == null || delay == -1);
     }
 
+    /**
+     * 实现InitializingBean接口，当ServiceBean内属性初始化结束之后的操作，由spring调用
+     *
+     * @throws Exception
+     */
     @SuppressWarnings({"unchecked", "deprecation"})
     public void afterPropertiesSet() throws Exception {
         if (getProvider() == null) {
